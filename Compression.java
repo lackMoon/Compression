@@ -15,7 +15,7 @@ import java.util.Objects;
 public class Compression {
     public static final File CWD = new File(System.getProperty("user.dir"));
     private static final int R = 65535;
-    private static final String COMPRESSION_SUFFIX = ".sz";
+    private static final String COMPRESSION_SUFFIX = "sz";
     public static int[] buildFrequencyTable(char[] inputSymbols) {
         int maxValue = 0;
         int[] table = new int[R];
@@ -55,7 +55,7 @@ public class Compression {
             Archive archive = new Archive(fileName, trie, symbolNums, bitSequence);
             archives.add(archive);
         }
-        ObjectWriter objectWriter = new ObjectWriter(compressionName + COMPRESSION_SUFFIX);
+        ObjectWriter objectWriter = new ObjectWriter(compressionName + "." + COMPRESSION_SUFFIX);
         objectWriter.writeObject(archives);
     }
 
@@ -106,14 +106,14 @@ public class Compression {
         return length;
     }
 
-    public static void validateArgs(String[] args) {
+    public static void validateFiles(String[] args) {
         for (String arg : args) {
             String suffix = "";
             int index = arg.lastIndexOf('.');
             if(index > 0) {
                 suffix = arg.substring(index + 1);
             }
-            if (suffix.equals("sz")) {
+            if (suffix.equals(COMPRESSION_SUFFIX)) {
                 errorMsg("Cannot compress the compressed files");
             }
         }
@@ -121,11 +121,15 @@ public class Compression {
     public static void main(String[] args) {
         int argLength = validateLength(args);
         String firstArg = args[0];
-        if (firstArg.equals("sz")) {
+        if (firstArg.equals(COMPRESSION_SUFFIX)) {
             String[] files = Arrays.copyOfRange(args, 2, argLength);
-            validateArgs(files);
+            validateFiles(files);
             encode(args[1], files);
-        } else if (firstArg.equals("unsz")) {
+        } else if (firstArg.equals("un" + COMPRESSION_SUFFIX)) {
+            File file = new File(args[1]);
+            if (!file.exists()) {
+                errorMsg("The specified compression Files is not exists.");
+            }
             decode(args[1], args[2]);
         } else {
             errorMsg("No command with that name exists.");
