@@ -16,6 +16,4 @@ public interface ExtrinsicPQ<T> {
     public void changePriority(T item, double priority);
     /* Returns the number of items in the PQ. */
     public int size();
-    /* Returns true if the PQ is Empty. */
-    public boolean isEmpty();
 }

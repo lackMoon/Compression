@@ -120,14 +120,10 @@ public class MaxHeap<T> implements ExtrinsicPQ<T> {
         validateSinkSwimArg(index);
         int leftIndex = leftIndex(index);
         int rightIndex = rightIndex(index);
-        sink(index, leftIndex);
-        sink(index, rightIndex);
-    }
-
-    private void sink(int index, int childIndex) {
-        if (inBounds(childIndex) && max(index, childIndex) == childIndex) {
-            swap(index, childIndex);
-            sink(childIndex);
+        int changeIndex = max(leftIndex, rightIndex);
+        if (inBounds(changeIndex) && max(index, changeIndex) == changeIndex) {
+            swap(index, changeIndex);
+            sink(changeIndex);
         }
     }
     /**
@@ -183,10 +179,6 @@ public class MaxHeap<T> implements ExtrinsicPQ<T> {
         return size;
     }
 
-    @Override
-    public boolean isEmpty() {
-        return size == 0;
-    }
 
     /**
      * Change the node in this heap with the given item to have the given

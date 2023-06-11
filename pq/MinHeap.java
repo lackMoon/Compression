@@ -183,11 +183,6 @@ public class MinHeap<T> implements ExtrinsicPQ<T> {
         return size;
     }
 
-    @Override
-    public boolean isEmpty() {
-        return size == 0;
-    }
-
     /**
      * Change the node in this heap with the given item to have the given
      * priority. You can assume the heap will not have two nodes with the same
